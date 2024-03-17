@@ -44,3 +44,29 @@ export const getRoomDetails = async (
     room,
   });
 };
+
+export const updateRoom = async (
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  let room = await Room.findById(params.id);
+  const body = await req.json();
+
+  if (!room) {
+    return NextResponse.json(
+      {
+        message: "Room not found",
+      },
+      { status: 404 }
+    );
+  }
+
+  room = await Room.findByIdAndUpdate(params.id, body, {
+    new: true,
+  });
+
+  return NextResponse.json({
+    success: true,
+    room,
+  });
+};
