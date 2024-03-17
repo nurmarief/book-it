@@ -1,18 +1,36 @@
 import { NextResponse, NextRequest } from "next/server";
-import Room from "../models/room";
+import Room, { IRoom } from "../models/room";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import ErrorHandler from "../utils/errorHandler";
+import APIFilters from "../utils/APIFilters";
 
 export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
-  const resPerPage: number = 8;
+  const resPerPage: number = 4;
 
-  const rooms = await Room.find();
+  const { searchParams } = new URL(req.url);
 
-  return NextResponse.json({ 
+  const queryStr: any = {};
+  searchParams.forEach((value, key) => {
+    queryStr[key] = value;
+  });
+
+  const roomsCount: number = await Room.countDocuments();
+
+  const apiFilters = new APIFilters(Room, queryStr).search().filter();
+
+  let rooms: IRoom[] = await apiFilters.query;
+  const filteredRoomsCount: number = rooms.length;
+
+  apiFilters.pagination(resPerPage);
+  rooms = await apiFilters.query.clone();
+
+  return NextResponse.json({
     success: true,
+    roomsCount,
+    filteredRoomsCount,
     resPerPage,
     rooms,
-   });
+  });
 });
 
 export const postNewRoom = catchAsyncErrors(async (req: NextRequest) => {
