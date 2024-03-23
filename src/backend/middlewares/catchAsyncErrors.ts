@@ -9,7 +9,10 @@ export const catchAsyncErrors =
     try {
       return await handler(req, params);
     } catch (error: any) {
-      const newErrorData = new ErrorHandler("Internal server error", 500);
+      const newErrorData = new ErrorHandler(
+        error.message || "Internal server error", 
+        error.statusCode || 500
+      );
 
       // Mongodb or mongoose error
       if (error instanceof MongooseError || error instanceof mongo.MongoError || error.name === "MongoError") {

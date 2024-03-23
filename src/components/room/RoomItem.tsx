@@ -3,36 +3,48 @@
 import Link from "next/link";
 import React from "react";
 import StarRatings from "react-star-ratings";
+import { IRoom } from "@/backend/models/room";
+import Image from "next/image";
 
-const RoomItem = () => {
+interface Props {
+  room: IRoom;
+}
+
+const RoomItem = ({ room }: Props) => {
   return (
     <div className="w-full md:w-4/12">
       {/* Card */}
-      <div className="card w-96 shadow-xl">
+      <div className="card shadow-xl">
         {/* Card img */}
         <figure>
           <img
-            src="images/default_room_image.jpg"
-            alt=""
+            src={
+              room?.images?.length > 0
+                ? room.images[0].url
+                : "/images/default_room_image.jpg"
+            }
+            alt={room?.name}
           />
         </figure>
         {/* Card body */}
         <div className="card-body">
-          <h2 className="card-title">Room name</h2>
-          <p><span className="font-bold text-xl">$100 </span><span>/ night</span></p>
+          <h2 className="card-title">
+            <Link href={`/rooms/${room?._id}`}>{room?.name}</Link>
+          </h2>
+          <p><span className="font-bold text-xl">${room?.pricePerNight} </span><span>/ night</span></p>
           <div className="flex gap-2">
             <StarRatings
-              rating={5}
+              rating={room?.ratings}
               starRatedColor="#e61e4d"
               numberOfStars={5}
               starDimension="18px"
               starSpacing="1px"
               name="rating"
             />
-            <span className="no-of-reviews">(50 Reviews)</span>
+            <span className="no-of-reviews">({room?.numOfReviews} Reviews)</span>
           </div>
           <div className="card-actions justify-end">
-            <Link href="/rooms/roomId" className="btn btn-primary btn-block">View Details</Link>
+            <Link href={`/rooms/${room?._id}`} className="btn btn-primary btn-block">View Details</Link>
           </div>
         </div>
       </div>
