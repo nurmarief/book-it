@@ -23,9 +23,9 @@ const Home = ({ data }: Props) => {
         <Link href="/search" className="ml-2 text-primary font-bold">
           <FaArrowLeft className="inline" /> Back to Search
         </Link>
-        <div className="flex flex-wrap gap-4 mt-4">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {rooms?.length === 0 ? (
-            <div className="text-primary mt-5 w-100">
+            <div className="text-primary mt-5 col-span-full">
               <p className="text-2xl">No Rooms.</p>
             </div>
           ) : (

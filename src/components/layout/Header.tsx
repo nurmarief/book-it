@@ -10,7 +10,7 @@ const Header = () => {
         <div className="flex-1">
           <Link href="/">
             <img
-              src="images/bookit_logo.png"
+              src="/images/bookit_logo.png"
               alt="BookIT"
             />
           </Link>
@@ -32,7 +32,7 @@ const Header = () => {
               </div>
             </div>
             {/* Content */}
-            <div tabIndex={0} className="dropdown-content menu shadow rounded-box p-2 w-fit z-[1]">
+            <div tabIndex={0} className="dropdown-content menu shadow rounded-box p-2 w-fit bg-base-100">
               <Link href="/admin/dashboard" className="btn btn-ghost leading-normal">
                 Dashboard
               </Link>

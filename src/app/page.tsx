@@ -11,7 +11,7 @@ const getRooms = async () => {
 export default async function HomePage() {
   const data = await getRooms();
 
-  if(data.message) {
+  if(data?.message) {
     return <Error error={data}/>
   }
 
