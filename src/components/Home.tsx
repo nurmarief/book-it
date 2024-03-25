@@ -1,8 +1,12 @@
+"use client";
+
 import React, { PropsWithRef } from "react";
 import RoomItem from "./room/RoomItem";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
 import { IRoom } from "@/backend/models/room";
+import CustomPagination from "./layout/CustomPagination";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
   data: {
@@ -14,12 +18,18 @@ interface Props {
 }
 
 const Home = ({ data }: Props) => {
+  const searchParams = useSearchParams();
+  const location = searchParams.get("location");
   const { rooms, resPerPage, filteredRoomsCount } = data;
   
   return (
     <div className="w-full lg:w-10/12 lg:mx-auto">
       <section id="rooms">
-        <h1 className="mb-3 ml-2 font-extrabold text-2xl">All Rooms</h1>
+        <h1 className="mb-3 ml-2 font-extrabold text-2xl">
+          {location
+            ? `${filteredRoomsCount} ${filteredRoomsCount <= 1 ? "room" : "rooms"} found in ${location}`
+            : "All Rooms"}
+        </h1>
         <Link href="/search" className="ml-2 text-primary font-bold">
           <FaArrowLeft className="inline" /> Back to Search
         </Link>
@@ -33,6 +43,10 @@ const Home = ({ data }: Props) => {
           )}
         </div>
       </section>
+      <CustomPagination 
+        resPerPage={resPerPage}
+        filteredRoomsCount={filteredRoomsCount}
+      />
     </div>
   );
 };
